@@ -1,0 +1,16 @@
+<div>
+  <search-bar
+    placeholder="Search..."
+    [query]="searchQuery()"
+    [results]="searchResults()"
+    (queryChange)="onSearchQueryChange($event)"
+    (resultSelected)="selectResult($event)"
+    (inputFocused)="onInputFocus()">
+  </search-bar>
+  <button class="btn" [disabled]="!locationSearched()" (click)="search()">
+    🔍 Search a point
+  </button>
+  <button class="btn" [disabled]="!locationSearched()" (click)="delete()">
+      Delete a point
+  </button>
+</div>

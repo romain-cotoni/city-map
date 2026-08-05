@@ -1,0 +1,12 @@
+<div class="search-bar">
+  @if (results().length > 0) {
+    <ul class="search-results">
+      @for (result of results(); track result.id) {
+        <li (click)="onSelect(result)" style="cursor: pointer;">
+          {{ result.label }}<span class="coords">({{ result.lat.toFixed(4) }}, {{ result.lon.toFixed(4) }})</span>
+        </li>
+      }
+    </ul>
+  }
+  <input type="text" class="search-input" [placeholder]="placeholder()" [value]="query()" (input)="onInput($event)" (focus)="onFocus()"/>
+</div>

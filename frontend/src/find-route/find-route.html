@@ -1,0 +1,27 @@
+<search-bar
+  placeholder="Origin..."
+  [query]="fromQuery()"
+  [results]="fromResults()"
+  (queryChange)="onFromChange($event)"
+  (resultSelected)="onFromSelect($event)"
+  (inputFocused)="onFromFocus()">
+</search-bar>
+
+<search-bar
+  placeholder="Destination..."
+  [query]="toQuery()"
+  [results]="toResults()"
+  (queryChange)="onToChange($event)"
+  (resultSelected)="onToSelect($event)"
+  (inputFocused)="onToFocus()">
+</search-bar>
+
+<select class="select" [ngModel]="mode()" (ngModelChange)="mode.set($event)">
+  @for (m of transportModes; track m.value) {
+    <option [value]="m.value">{{ m.label }}</option>
+  }
+</select>
+
+<button class="btn" [disabled]="!canCalculate()" (click)="calculateRoute()">
+  Find Route
+</button>

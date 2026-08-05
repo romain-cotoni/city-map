@@ -1,0 +1,8 @@
+<main class="main">
+  <app-map-view class="map" [selectedLocation]="selectedResult()" [poiToAdd]="poiToAdd()" (mapClick)="onMapClick($event)"></app-map-view>
+
+  @if (showAddPoiForm()) {
+    <app-add-poi-modal (add)="onAddConfirmed($event)" (cancel)="cancel()" />
+  }
+  <app-dashboard class="dashboard" (locationSelected)="onLocationSelected($event)"  />
+</main>

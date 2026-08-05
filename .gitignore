@@ -1,0 +1,46 @@
+# Backend
+backend/target/
+*.class
+application-dev.yml
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+
+
+
+# Env
+.env
+
+# Docker
+docker-compose.dev.yml

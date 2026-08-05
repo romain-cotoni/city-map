@@ -1,0 +1,77 @@
+# docker compose for local environment - db, frontend & backend deployed on docker
+name: map
+services:
+  db:
+    container_name: map-db
+    image: pgrouting/pgrouting:17-3.5-3.8
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./db:/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  import-data:
+    image: pgrouting/pgrouting-extra
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./db:/data
+    command: >
+      osm2pgrouting --file /data/export.osm
+      --conf /usr/local/share/osm2pgrouting/mapconfig.xml
+      --dbname ${DB_NAME} --host ${DB_HOST} --user ${DB_USER} --password ${DB_PASSWORD} --clean
+      
+  post-import:
+    image: pgrouting/pgrouting:17-3.5-3.8
+    depends_on:
+      import-data:
+        condition: service_completed_successfully
+    volumes:
+      - ./db/post-import.sql:/data/post-import.sql:ro
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    entrypoint: >
+      psql -h ${DB_HOST} -U ${DB_USER} -d ${DB_NAME} -f /data/post-import.sql
+
+      
+
+  backend:
+    container_name: map-backend
+    build: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${PORT_BACKEND}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+
+  frontend:
+    container_name: map-frontend
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT}:80"
+    depends_on:
+      - backend
+
+
+
+volumes:
+  db_data:

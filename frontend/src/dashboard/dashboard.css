@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  width: 0;
+  overflow: visible;
+  transition: width 0.25s ease;
+}
+
+.container.open {
+  width: 320px;
+}
+
+.toggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -1.75rem;
+  width: 1.75rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #1e2a3f;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background: rgba(15, 26, 46, 0.95);
+  color: #5b9dd9;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.25);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.toggle:hover {
+  background: #16233d;
+  color: #7fb8ea;
+}
+
+.panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: rgba(84, 90, 100, 0.95);
+  overflow-y: auto;
+  padding: 1rem;
+  gap: 3rem;
+}
+
